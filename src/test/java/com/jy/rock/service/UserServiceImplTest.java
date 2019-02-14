@@ -21,4 +21,5 @@ public class UserServiceImplTest extends TestClassBase {
         user.setFullName("管理员");
         this.userService.add(user);
     }
+
 }
