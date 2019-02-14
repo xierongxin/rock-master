@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jy.rock.dao.CustomerDao">
+    <select id="pagination" resultType="com.jy.rock.domain.Customer">
+        select * from customer c
+        <where>
+            <if test="query.name != null and query.name != ''">
+                and c.name like concat('%', #{query.name}, '%')
+            </if>
+
+            <if test="query.tel != null and query.tel != ''">
+                and c.tel = #{query.tel}
+            </if>
+
+            <if test="query.mobile != null and query.mobile != ''">
+                and c.mobile = #{query.mobile}
+            </if>
+
+            <if test="query.address != null and query.address != ''">
+                and c.name like concat('%', #{query.address}, '%')
+            </if>
+        </where>
+        order by ${query.sortField} ${query.sortOrder}
+    </select>
+</mapper>

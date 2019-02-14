@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jy.rock.dao.EquipmentDao">
+
+    <select id="pagination" resultMap="BaseEquipmentVO">
+        select e.*, em.brand_id as brand_id, em.name as model_name
+        from equipment e
+                 left join equipment_model em on e.model_id = em.id
+        order by ${query.sortField} ${query.sortOrder}
+    </select>
+
+    <resultMap id="BaseEquipmentVO" type="com.jy.rock.bean.equipment.EquipmentVO" autoMapping="true">
+        <id column="id" property="id"/>
+    </resultMap>
+</mapper>

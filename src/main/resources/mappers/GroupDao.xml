@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jy.rock.dao.GroupDao">
+    <select id="findWithUsers" resultMap="GroupVO">
+        select g.*, u.id as user_id, u.full_name as user_full_name
+        from group_info g
+                 left join group_member gm on g.id = gm.group_id
+                 left join user_info u on gm.user_id = u.id
+    </select>
+
+    <resultMap id="GroupVO" type="com.jy.rock.bean.group.GroupVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="users" ofType="com.xmgsd.lan.roadhog.bean.IdNameEntry">
+            <id column="user_id" property="id"/>
+            <id column="user_full_name" property="name"/>
+        </collection>
+    </resultMap>
+</mapper>

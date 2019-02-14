@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jy.rock.dao.UserDao">
+    <select id="getWithGroupByUsername" resultMap="UserWithGroupsVO">
+        select u.*, gi.id as group_id, gi.name as group_name
+        from user_info u
+                 left join group_member gm on u.id = gm.user_id
+                 left join group_info gi on gm.group_id = gi.id
+        where u.username = #{username}
+    </select>
+
+    <resultMap id="UserWithGroupsVO" type="com.jy.rock.bean.UserWithGroupsVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="groups" ofType="com.jy.rock.domain.Group">
+            <id property="id" column="group_id"/>
+            <result property="name" column="group_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="findWithGroups" resultMap="UserVO">
+        select u.*, gi.id as group_id, gi.name as group_name
+        from user_info u
+                 left join group_member gm on u.id = gm.user_id
+                 left join group_info gi on gm.group_id = gi.id
+    </select>
+
+    <resultMap id="UserVO" type="com.jy.rock.bean.user.UserVO" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="groups" ofType="com.xmgsd.lan.roadhog.bean.IdNameEntry">
+            <id property="id" column="group_id"/>
+            <result property="name" column="group_name"/>
+        </collection>
+    </resultMap>
+
+    <select id="resetPassword">
+        update user_info
+        set password                       = #{newPassword},
+            last_time_change_password      = #{lastTimeChangePasswordDate},
+            need_change_password_when_login= #{needChangePasswordWhenLogin}
+        where id = #{id}
+    </select>
+</mapper>
